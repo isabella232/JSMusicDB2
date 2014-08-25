@@ -1,0 +1,717 @@
+// customize bootstrap variables here:
+
+@import "variables";
+@import "bootstrap";
+@import "mixins/_responsive.scss";
+
+// Prevent history navigation in IE on touch devices
+html,body {
+  touch-action: pan-y
+}
+// Prevent 300ms delay in IE on touch devices
+a, button {
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    color: $brand-primary;
+}
+
+body {
+  background: $brand-background;
+  color: $font-primary;
+  font-family: "Segoe UI", "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+header {
+  background: $brand-primary;
+  color: $font-tertiary;
+  border-bottom: 1px solid $brand-tertiary;
+
+  position: fixed;
+  z-index: 3;
+  width: 100%;
+
+  .header {
+    height: 50px;
+    #logo {
+      background: url(../images/icon.png) no-repeat 0 0;
+      background-size: 50px;
+      height: 50px;
+      width: 50px;
+      display: block;
+      float: left;
+      overflow: hidden;
+      text-indent: -2000em;
+      margin-left: -5px;
+    }
+    .dropdown-menu {
+      top: 50px;
+      width: 50%;
+      li {
+        a {
+          padding: 6px 10px;
+          font-size: 1.2em;
+          i {
+            margin-right: 10px;
+          }
+        }
+      }
+    }
+    h1 {
+      font-size: 1.3em;
+      margin: 10px 0 0 10px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      text-transform: capitalize;
+      white-space: nowrap;
+    }
+  }
+  .mobile-nav .dropdown {
+
+    button.navbar-toggle {
+      margin-right: 0;
+      border-color: $font-tertiary;
+      .icon-bar {
+        background-color: $font-tertiary;
+      }
+    }
+    .dropdown-menu {
+      min-width: 230px;
+      top: 40px;
+      li {
+        display: inline-block;
+        &.active a {
+          background: $brand-primary;
+        }
+        a {
+          padding: 12px 0;
+          text-align: center;
+          width: 45px;
+        }
+      }
+    }
+   }
+}
+nav.navbar {
+  position: fixed;
+  z-index: 2;
+  width: 100%;
+  top: 50px;
+  min-height: 0;
+
+  .container {
+    padding : 0;
+    .collapse {
+      padding: 0;
+    }
+  }
+  .nav > li > a {
+    padding: 10px;
+    @include jsmusicdb-respond-min-width(md) {
+      padding: 12px 12px;
+    }
+    @include jsmusicdb-respond-min-width(lg) {
+      padding: 12px 15px;
+    }
+  }
+}
+.nav {
+  li a {
+    .remove {
+      display: block;
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      text-align: center;
+      background: $brand-secondary;
+      color: $font-primary;
+      width: 20px;
+      height: 20px;
+      font-weight: bold;
+      font-size: 16px;
+      line-height: 1;
+      z-index: 1;
+
+      &:hover {
+        background: $brand-primary;
+        color: $font-tertiary;
+      }
+    }
+  }
+}
+body.playing #main {
+  padding-bottom: 120px;
+}
+#main {
+  padding-top: 60px;
+  @include jsmusicdb-respond-min-width(sm) {
+    padding-top: 110px;
+  }
+  h1 {
+    margin: 0 0 5px;
+  }
+  ul.media, table {
+    margin-bottom: 20px;
+  }
+  table.table {
+    border: 1px solid $brand-secondary;
+    text-transform: capitalize;
+    tr {
+      td {
+        border-top: 0;
+        background: $gray-ultralight;
+        padding: 10px 15px;
+        cursor: default;
+
+        &.counter {
+          color: $brand-primary;
+        }
+
+        .hovered {
+          display: none;
+        }
+      }
+
+    }
+    &.table-hover {
+      tr {
+        &:hover {
+        td {
+          background-color: $brand-secondary;
+          cursor: pointer;
+
+          .hovered {
+            display: block;
+          }
+        }
+      }
+      }
+    }
+  }
+  .table-responsive {
+    border: 0;
+    margin-bottom: 0;
+    td {
+      cursor: pointer;
+    }
+  }
+  .tracklist {
+    margin-top: 20px;
+  }
+  .albumart {
+    border: 1px solid $brand-secondary;
+  }
+}
+
+ul.media {
+  list-style: none;
+  margin: 0;
+  overflow: visible;
+
+  @include jsmusicdb-respond-min-width(sm) {
+    margin: 0 0 0 -1%;
+  }
+  padding: 0;
+
+  li {
+    display: inline-block;
+    width: 49%;
+    overflow: hidden;
+    position: relative;
+
+    -webkit-transition: 0.1s ease-in-out;
+    -moz-transition: 0.1s ease-in-out;
+    -o-transition: 0.1s ease-in-out;
+    transition: 0.1s ease-in-out;
+
+    @include jsmusicdb-respond-min-width(sm) {
+      width: 23.5%;
+
+    }
+    height: 150px;
+    @include jsmusicdb-respond-min-width(md) {
+      height: 200px;
+    }
+    @include jsmusicdb-respond-min-width(lg) {
+      height: 240px;
+    }
+
+    border: 1px solid $brand-secondary;
+    margin: 0 0 10px 1%;
+    position: relative;
+    background: url(../images/nocover.png);
+    background-size: cover;
+    a {
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      color: $font-primary;
+    }
+    p {
+      color: $font-primary;
+      position: absolute;
+      padding: 10px;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      background: rgba(207,216,220, 0.9);
+      margin: 0;
+      line-height: 1.05;
+      text-transform: capitalize;
+
+      -webkit-transition: 0.1s ease-in-out;
+      -moz-transition: 0.1s ease-in-out;
+      -o-transition: 0.1s ease-in-out;
+      transition: 0.1s ease-in-out;
+
+      .small {
+        display: block;
+        color: $font-secondary;
+      }
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+    &:hover {
+      border: 1px solid $brand-tertiary;
+      -webkit-transform:scale(1.02);
+      -ms-transform:scale(1.02);
+      transform:scale(1.02);
+      z-index: 1;
+    }
+    &:active {
+      border: 1px solid $brand-tertiary;
+      -webkit-transform:scale(0.98);
+      -ms-transform:scale(0.98);
+      transform:scale(0.98);
+      z-index: 1;
+    }
+  }
+}
+/* loader */
+#loader {
+  background: none repeat scroll 0 0 #FFFFFF;
+  border: 3px solid #AAAAAA;
+  border-radius: 5px 5px 5px 5px;
+  -webkit-box-shadow: 0 0 0 5000px rgba(0,0,0,0.95);
+  box-shadow: 0 0 0 5000px rgba(0,0,0,0.75);
+  bottom: 0;
+  display: block;
+  max-height: 115px;
+  left: 0;
+  margin: auto;
+  position: absolute;
+  right: 0;
+  text-align: center;
+  top: 0;
+  width: 325px;
+  z-index: 10000;
+}
+#loader h2 {
+  font-size: 28px;
+}
+#loader img {
+  display: block;
+  margin: 5px auto 0;
+}
+
+/* the player */
+footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: $brand-background;//rgba(236, 239, 241, 0.9);
+  color: $font-primary;
+  border-top: 1px solid $brand-secondary;
+  text-transform: capitalize;
+  z-index: 10;
+
+  &.partyMode {
+    -webkit-transition: height 0.3s;
+    transition: height 0.3s;
+    height: 101%;
+    background: #000000;
+    .inPartyMode {
+      color: $font-tertiary;
+      @include jsmusicdb-respond-min-width(sm) {
+       height: 80%;
+       padding: 1% 0;
+      }
+      .imageWrapper {
+        position: relative;
+        height: 100%;
+        overflow: hidden;
+        z-index: 0;
+        margin: 0 auto;
+        width: 100%;
+        img {
+          width: 100%;
+          &.currentAlbumArt {
+            position: absolute;
+            z-index: 0;
+            top: 0;
+            left: 0;
+          }
+          &.previousAlbumArt {
+             z-index: 1;
+             transform: translate3d(0%, 0, 0);
+             opacity: 1;
+           }
+           &.animate {
+             z-index: 2;
+             transition: 0.3s ease-in-out;
+             transform: translate3d(-100%, 0, 0);
+             opacity: 1;
+           }
+           &.animateBack {
+             z-index: 2;
+             transition: 0.3s ease-in-out;
+             transform: translate3d(100%, 0, 0);
+             opacity: 1;
+           }
+          @include jsmusicdb-respond-min-width(sm) {
+           height: 100%;
+           width: auto;
+           display: block;
+           margin: 0 auto;
+           top: 0;
+          }
+        }
+      }
+      canvas {
+        width: 49%;
+        float: left;
+        height: 250px;
+        display: none;
+      }
+    }
+    .inPartyMode .progressContainer {
+      .time {
+        color: $font-primary;
+      }
+       > div {
+        background-color: $brand-secondary;
+      }
+    }
+    .inPartyMode .closeNowPlaying {
+      position: absolute;
+      left: 20px;
+      top: 20px;
+      font-size: 16px;
+      z-index: 1;
+      color: #ffffff;
+      text-shadow: 1px 1px #000000;
+    }
+    .inPartyMode .container {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+
+      .tertiary {
+        background: $brand-tertiary;
+      }
+      .secondary {
+        background: $brand-secondary;
+      }
+      .primary {
+        background: $brand-primary;
+      }
+      .background {
+        background: $brand-background;
+        padding-top: 5px;
+        h4, p {
+          color: $font-primary;
+        }
+      }
+
+      .icons {
+        font-size: 40px;
+        text-align: center;
+        a {
+          margin-right: 30px;
+          float: none;
+          display: inline-block;
+          color: $gray-ultralight;
+          &.icon-big {
+            font-size: 64px;
+            line-height: 1;
+            margin-top: 0;
+            vertical-align: top;
+          }
+          &:last-child {
+            margin-right: 0;
+          }
+        }
+      }
+      .volumeControl {
+        margin-top: 20px;
+        width: 47%;
+        i {
+          width: 40px;
+        }
+        input[type='range'] {
+          display: inline-block;
+          width: 55%;
+          float: left;
+          margin: 0 0 0 10px;
+          padding: 0;
+          height: 41px;
+        }
+      }
+    }
+  }
+
+  h3, h4, p {
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    line-height: 1.3;
+  }
+  p {
+   height: 50px;
+  }
+  .container {
+    position: relative;
+  }
+  .push-up {
+    position: absolute;
+    left: 15px;
+    top: 7px;
+  }
+  .pushed-left {
+    @include jsmusicdb-respond-min-width(sm) {
+      margin-left: 115px;
+     }
+  }
+
+  .progressContainer {
+    position: relative;
+    overflow: hidden;
+    height: 15px;
+    > div {
+      background-color: $brand-primary;
+      border-radius: 0;
+      box-shadow: none;
+      margin-bottom: 0;
+      z-index: 2;
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      -webkit-transition: 0.3s ease-in-out;
+      -moz-transition: 0.3s ease-in-out;
+      -o-transition: 0.3s ease-in-out;
+      transition: 0.3s ease-in-out;
+    }
+    .prebuffer {
+      opacity: 0.3;
+      z-index: 1;
+    }
+    .time {
+      position: relative;
+      z-index: 10;
+      pointer-events: none;
+      top: -3px;
+
+      &.stop {
+        float: right;
+      }
+    }
+  }
+  .icons {
+    font-size: 20px;
+    a {
+      color: $font-primary;
+      display: block;
+      float: left;
+      margin: 8px 12px 0 0;
+      cursor: pointer;
+
+      @include jsmusicdb-respond-min-width(sm) {
+       margin-right: 25px;
+      }
+
+      &.icon-big {
+        font-size: 30px;
+        margin-top: 0;
+      }
+
+      &:hover {
+        color: darken($gray-ultralight, 20%)
+      }
+    }
+    .volumeControl {
+      overflow: hidden;
+      float: left;
+      width: 50%;
+      margin: 14px 15px 0 0;
+      i {
+        float: left;
+        width: 20px;
+      }
+      input[type='range'] {
+        display: inline-block;
+        width: 48%;
+        float: left;
+        margin: 0 0 0 10px;
+        padding: 0;
+        height: 22px;
+      }
+    }
+
+  }
+}
+
+@include jsmusicdb-respond-min-width(sm) {
+ .col-fixed {
+   position: fixed;
+   top: 110px;
+   z-index: 1;
+   width: 300px;
+ }
+}
+
+.well {
+  border-radius: 0;
+  background: $gray-ultralight;
+}
+
+.slideWrapper {
+  position: relative;
+  overflow: hidden;
+  height: 40px;
+
+  > div {
+    position: absolute;
+    left: 15px;
+    top: 10px;
+    width: 90%;
+    -webkit-transition: 0.3s ease-in-out;
+    -moz-transition: 0.3s ease-in-out;
+    -o-transition: 0.3s ease-in-out;
+    transition: 0.3s ease-in-out;
+
+    .toggle {
+      float: right;
+      text-align: center;
+      width: 20px;
+      height: 20px;
+      position: absolute;
+      right: 0;
+      background: $brand-primary;
+      color: $font-tertiary;
+    }
+    .edit {
+      width: 50%;
+      display: block;
+      float: left;
+      color: rgba(0,128,0,0.5);
+    }
+    .remove {
+      width: 50%;
+      display: block;
+      float: left;
+      color: rgba(128,0,0,0.5);
+    }
+  }
+
+  .primary {
+
+
+  }
+  .secondary {
+    transform: translateX(120%);
+  }
+
+  &.secondary .primary {
+    transform: translateX(-120%);
+  }
+  &.secondary .secondary {
+    transform: translateX(0%);
+  }
+}
+
+tr.primary {
+  overflow: hidden;
+  .secondary {
+    display: none;
+  }
+}
+
+tr.secondary {
+  overflow: hidden;
+  .primary {
+    display: none;
+  }
+}
+
+.editWrapper {
+  position: relative;
+  z-index: 1;
+
+  > div {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    -webkit-transition: 0.3s ease-in-out;
+    -moz-transition: 0.3s ease-in-out;
+    -o-transition: 0.3s ease-in-out;
+    transition: 0.3s ease-in-out;
+
+    .toggle {
+      position: absolute;
+      right: 1px;
+      bottom: 1px;
+      padding: 6px 8px;
+      background: $brand-secondary;
+    }
+  }
+  .primary {
+
+
+  }
+  .secondary {
+    padding: 7px 8px;
+    right: 1px;
+    bottom: 1px;
+    background: $brand-secondary;
+    transform: translateX(120%);
+    opacity: 0;
+
+    a {
+      color: $font-primary;
+    }
+  }
+
+  &.secondary .primary {
+    transform: translateX(-120%);
+    opacity: 0;
+  }
+  &.secondary .secondary {
+    transform: translateX(0%);
+    opacity: 1;
+  }
+}
+
+.well {
+  position: relative;
+
+  .loading {
+    background: rgba(255,255,255,0.75);
+    position: absolute;
+  }
+}
+.loading {
+
+  font-size: 16px;
+  height: 100%;
+  padding: 10px 15px;
+  width: 100%;
+  z-index: 100;
+}

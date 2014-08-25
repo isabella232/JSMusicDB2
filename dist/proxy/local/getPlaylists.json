@@ -1,0 +1,33 @@
+{
+   "items" : [
+      {
+         "albumArtURL" : "3rdparty/AudioStation/images/_1x/icon_playlist_96.png",
+         "is_container" : true,
+         "is_track" : false,
+         "item_id" : "musiclib_music_shared/playlist/977",
+         "item_pid" : "musiclib_music_playlist",
+         "sequence" : 0,
+         "title" : "Best of K2"
+      },
+      {
+         "albumArtURL" : "3rdparty/AudioStation/images/_1x/icon_playlist_96.png",
+         "is_container" : true,
+         "is_track" : false,
+         "item_id" : "musiclib_music_shared/playlist/979",
+         "item_pid" : "musiclib_music_playlist",
+         "sequence" : 1,
+         "title" : "Chillen met die billen"
+      },
+      {
+         "albumArtURL" : "3rdparty/AudioStation/images/_1x/icon_playlist_96.png",
+         "is_container" : true,
+         "is_track" : false,
+         "item_id" : "musiclib_music_shared/playlist/978",
+         "item_pid" : "musiclib_music_playlist",
+         "sequence" : 2,
+         "title" : "Ivana's shiznitz"
+      }
+   ],
+   "success" : true,
+   "total" : 3
+}

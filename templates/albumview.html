@@ -1,0 +1,84 @@
+<div ng-controller="AlbumViewController">
+
+	<div class="row">
+		<div class="col-xs-4 col-sm-2">
+		  <div class="editWrapper" ng-class="(viewAlbum.state === 'secondary') ? 'secondary' : 'primary'" ng-swipe-left="viewAlbum.state = 'secondary'" ng-swipe-right="viewAlbum.state = 'primary'">
+			 <img bn-lazy-src="{{viewAlbum.artistNode.name + '|' + viewAlbum.album}}" src="images/nocover.png" width="100%" class="albumart">
+			 <div class="primary">
+			   <a class="toggle" ng-click="viewAlbum.state = 'secondary'"><i class="ion-edit"></i></a>
+			 </div>
+			 <div class="secondary">
+			   <div class="dropdown" ng-hide="loading.addAlbumToPlaylist">
+          <a class="add dropdown-toggle" data-toggle="dropdown" ng-click="$event.stopPropagation();"><i class="ion-plus"></i> <span translate="album.playlist.add">Add to playlist</span></a>
+          <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+              <li role="presentation" ng-repeat="playlist in playlists.items">
+                <a role="menuitem" tabindex="-1" ng-click="addAlbumToPlaylist(playlist, viewAlbum)">{{playlist.title}}</a>
+              </li>
+              <li role="presentation" class="divider"></li>
+              <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="addAlbumToNewPlaylist(viewAlbum)"><span translate="album.playlist.new">New playlist</span></a></li>
+            </ul>
+        </div>
+        <div ng-show="loading.addAlbumToPlaylist">
+          <i class="ion-ios7-reloading"></i> <span translate="playlists.action.processing">processing</span>
+        </div>
+        <a class="toggle" ng-click="viewAlbum.state = 'primary'; $event.stopPropagation();"><i class="ion-arrow-right-b"></i></a>
+			 </div>
+			</div>
+		</div>
+		<div class="col-xs-8 col-sm-10">
+			<div class="table-responsive">
+				<table class="table">
+					<tr>
+						<td translate="album.artist">Artist</td>
+						<td>{{viewAlbum.artistNode.name}}</td>
+					</tr>
+					<tr>
+						<td translate="album.album">Album</td>
+						<td>{{viewAlbum.album}}</td>
+					</tr>
+					<tr ng-show="{{viewAlbum.year !== 0}}">
+						<td translate="album.year">Year</td>
+						<td class="counter">{{viewAlbum.year}}</td>
+					</tr>
+					<tr>
+						<td translate="album.tracks">Tracks</td>
+						<td class="counter">{{viewAlbum.tracks.length}}</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div class="row tracklist">
+		<div class="table-responsive col-xs-12">
+			<a ng-click="shuffle()">{{shuffleState}}</a>
+			<table class="table table-hover">
+				<tr ng-repeat="track in viewAlbum.tracks" ng-click="playTrack(track)" ng-swipe-left="track.state = 'secondary'" ng-swipe-right="track.state = 'primary'" ng-class="(track.state === 'secondary') ? 'secondary' : 'primary'">
+					<td class="counter" width="25"><span ng-show="track.isPlaying"> <i class="ion-play"></i> </span><span ng-show="!track.isPlaying">{{track.number}}</span></td>
+					<td class="primary">{{track.title}}</td>
+					<td class="counter primary" width="25" align="right">{{track.time}}</td>
+					<td class="toggle primary" width="25" align="right" ng-click="track.state = 'secondary'; $event.stopPropagation();">
+						<a class="toggle"><i class="ion-edit"></i></a>
+					</td>
+					<td colspan="2" class="secondary">
+						<div class="dropdown" ng-hide="loading.addToPlaylist">
+							<a class="add dropdown-toggle" data-toggle="dropdown" ng-click="$event.stopPropagation();"><i class="ion-plus"></i> <span translate="album.playlist.add">Add to playlist</span></a>
+							<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+							    <li role="presentation" ng-repeat="playlist in playlists.items">
+							    	<a role="menuitem" tabindex="-1" ng-click="addToPlaylist(playlist, track)">{{playlist.title}}</a>
+							    </li>
+							    <li role="presentation" class="divider"></li>
+							    <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="addToNewPlaylist(track)"><span translate="album.playlist.new">New playlist</span></a></li>
+							  </ul>
+						</div>
+						<div ng-show="loading.addToPlaylist">
+              <i class="ion-ios7-reloading"></i> <span translate="playlists.action.processing">processing</span>
+            </div>
+					</td>
+					<td class="toggle secondary" width="25" align="right" ng-click="track.state = 'primary'; $event.stopPropagation();">
+						<a class="toggle"><i class="ion-arrow-right-b"></i></a>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+</div>

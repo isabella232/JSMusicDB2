@@ -1,0 +1,40 @@
+<div ng-controller="OverviewController">
+	<div class="loading" ng-show="loading.recent"><i class="ion-ios7-reloading"></i> <span translate="overview.loading.recent">Loading recently listened</span></div>
+	<div ng-show="recentTracks.length > 0">
+		<h1><span translate="overview.headers.recent">Recently listened</span> <a style="font-size: 16px;" ng-click="loadRecent()"><i class="ion-refresh"></i></a></h1>
+		<div class="table-responsive">
+			<table class="table">
+				<tr ng-repeat="track in recentTracks track by $index">
+					<td class="counter" width="25"><span ng-show="track.isPlaying"> <i class="ion-play"></i> </span><span ng-show="!track.isPlaying">&nbsp;</span></td>
+					<td>{{track.artist}}</td>
+					<td>{{track.title}}</td>
+					<td class="counter" width="200" align="right">{{track.lastPlayed | date : 'medium'}}</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	<div class="loading" ng-show="loading.recentAdded"><i class="ion-ios7-reloading"></i> <span translate="overview.loading.added">Loading recently added</span></div>
+	<div ng-show="recentlyAdded.length > 0">
+		<h1 translate="overview.headers.added">Recently added</h1>
+		<ul class="media">
+			<li ng-repeat="album in recentlyAdded" bn-lazy-bg="{{album.artist + '|' + album.album}}">
+				<a ng-href="#/letter/{{album.letter}}/artist/{{album.artist}}/album/{{album.album}}">
+					<p class="details">
+						{{album.artist}} - {{album.album}}
+					</p>
+				</a>
+			</li>
+		</ul>
+	</div>
+	<div class="loading" ng-show="loading.upcomming"><i class="ion-ios7-reloading"></i> <span translate="overview.loading.upcoming">Loading upcoming releases</span></div>
+	<div ng-show="upcommingAlbums.length > 0">
+		<h1 translate="overview.headers.upcoming">Upcoming releases</h1>
+		<ul class="media">
+			<li ng-repeat="album in upcommingAlbums" style="background-image: url({{album.image}})">
+				<p class="details">
+					{{album.artist}} - {{album.album}}
+				</p>
+			</li>
+		</ul>
+	</div>
+</div>
