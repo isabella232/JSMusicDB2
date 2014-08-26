@@ -1,5 +1,5 @@
-jsmusicdb.controller('OverviewController', ['$scope', 'RestService', '$rootScope', 'ModelService',
-function($scope, RestService, $rootScope, ModelService) {
+jsmusicdb.controller('OverviewController', ['$scope', 'RestService', '$rootScope', 'ModelService', '$translate',
+function($scope, RestService, $rootScope, ModelService, $translate) {
 	'use strict';
 
 	$scope.upcommingAlbums = [];
@@ -18,6 +18,10 @@ function($scope, RestService, $rootScope, ModelService) {
 		return "" + firstLetter;
 	};
 
+	$scope.recentTracks = $rootScope.recentTracks;
+	$scope.recentlyAdded = $rootScope.recentlyAdded;
+	$scope.upcommingAlbums = $rootScope.upcommingAlbums;
+
 	$scope.loadRecent = function(n) {
 		if (!n) n = $rootScope.user.lastfmuser;
 		RestService.Overview.recent(n, function(json) {
@@ -33,20 +37,24 @@ function($scope, RestService, $rootScope, ModelService) {
 							if (fmtrack.date) {
 								track.lastPlayed = parseInt(fmtrack.date.uts) * 1000;
 							} else {
-								track.lastPlayed = "playing now";
+								$translate('overview.listening').then(function(translation) {
+									track.lastPlayed = translation;
+								});
 							}
 							tmplist.push(track);
 						}
 					} else {
 						var album = $scope.albums[artistName + "-" + albumName.toLowerCase()];
-						if (album) {
+						if (album && track) {
 							angular.forEach(album.tracks, function(track) {
 								if (track.title.toLowerCase() === title.toLowerCase()) {
 									RestService.Playlists.storeIdByKey(artistName + (title.toLowerCase()), track);
 									if (fmtrack.date) {
 										track.lastPlayed = parseInt(fmtrack.date.uts) * 1000;
 									} else {
-										track.lastPlayed = "Listening now";
+										$translate('overview.listening').then(function(translation) {
+											track.lastPlayed = translation;
+										});
 									}
 									tmplist.push(track);
 								}
@@ -59,13 +67,16 @@ function($scope, RestService, $rootScope, ModelService) {
 							if (fmtrack.date) {
 								track.lastPlayed = parseInt(fmtrack.date.uts) * 1000;
 							} else {
-								track.lastPlayed = "Listening now";
+								$translate('overview.listening').then(function(translation) {
+									track.lastPlayed = translation;
+								});
 							}
 							tmplist.push(track);
 						}
 					}
 				});
 				$scope.recentTracks = tmplist;
+				$rootScope.recentTracks = tmplist;
 			}
 		});
 	};
@@ -78,7 +89,9 @@ function($scope, RestService, $rootScope, ModelService) {
 				$scope.letters[letterObject].active = false;
 			}
 			var tmplist = [];
-			$scope.loading.recentAdded = true;
+			if (!$rootScope.recentlyAdded) {
+				$scope.loading.recentAdded = true;
+			}
 			RestService.Overview.recentlyAdded(function(json) {
 				$scope.loading.recentAdded = false;
 				if (json.items) {
@@ -100,6 +113,7 @@ function($scope, RestService, $rootScope, ModelService) {
 						}
 					});
 					$scope.recentlyAdded = tmplist;
+					$rootScope.recentlyAdded = $scope.recentlyAdded;
 				}
 			});
 			$scope.$watch(function() {
@@ -107,7 +121,9 @@ function($scope, RestService, $rootScope, ModelService) {
 			}, function(n, o) {
 				if (n) {
 					var tmplist = [];
-					$scope.loading.upcomming = true;
+					if (!$rootScope.upcommingAlbums) {
+						$scope.loading.upcomming = true;
+					}
 					RestService.Overview.upcomming(n, function(json) {
 						$scope.loading.upcomming = false;
 						if (json.albums) {
@@ -122,8 +138,11 @@ function($scope, RestService, $rootScope, ModelService) {
 							});
 						}
 						$scope.upcommingAlbums = tmplist;
+						$rootScope.upcommingAlbums = $scope.upcommingAlbums;
 					});
-					$scope.loading.recent = true;
+					if (!$rootScope.recentTracks) {
+						$scope.loading.recent = true;
+					}
 					$scope.loadRecent(n);
 				}
 			});

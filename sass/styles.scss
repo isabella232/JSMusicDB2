@@ -324,7 +324,7 @@ footer {
   left: 0;
   bottom: 0;
   right: 0;
-  background: $brand-background;//rgba(236, 239, 241, 0.9);
+  background: $brand-background2;//rgba(236, 239, 241, 0.9);
   color: $font-primary;
   border-top: 1px solid $brand-secondary;
   text-transform: capitalize;
@@ -436,6 +436,7 @@ footer {
           float: none;
           display: inline-block;
           color: $gray-ultralight;
+          text-decoration: none;
           &.icon-big {
             font-size: 64px;
             line-height: 1;
@@ -444,6 +445,9 @@ footer {
           }
           &:last-child {
             margin-right: 0;
+          }
+          &:hover {
+            color: darken($gray-ultralight, 20%)
           }
         }
       }
@@ -531,6 +535,7 @@ footer {
       float: left;
       margin: 8px 12px 0 0;
       cursor: pointer;
+      text-decoration: none;
 
       @include jsmusicdb-respond-min-width(sm) {
        margin-right: 25px;

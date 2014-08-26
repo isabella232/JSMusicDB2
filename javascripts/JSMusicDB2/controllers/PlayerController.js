@@ -249,7 +249,9 @@ function($scope, $rootScope, $log, RestService) {'use strict';
 	};
 
 	$scope.next = function(prebuffer) {
-		$scope.playing.track.animate = false;
+		if ($scope.playing.track) {
+			$scope.playing.track.animate = false;
+		}
 		$(".previousAlbumArt").attr("src", $(".currentAlbumArt").attr("src")).removeClass('animate').removeClass('animated').removeClass('animateBack');
 		if (!prebuffer) {
 			$scope.prebufferdTrack = null;
@@ -303,7 +305,9 @@ function($scope, $rootScope, $log, RestService) {'use strict';
 	};
 
 	$scope.back = function(prebuffer) {
-		$scope.playing.track.animate = false;
+		if ($scope.playing.track) {
+			$scope.playing.track.animate = false;
+		}
 		$(".previousAlbumArt").attr("src", $(".currentAlbumArt").attr("src")).removeClass('animate').removeClass('animated').removeClass('animateBack').addClass('temp-back');
 		$scope.prebufferdTrack = null;
 		if (!$scope.playingList) {

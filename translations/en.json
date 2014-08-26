@@ -1,46 +1,47 @@
 {
-  "general" : {
+  "general": {
     "loading": "Please wait, loading data",
-    "menu" : {
+    "menu": {
       "overview": "Overview",
       "playlists": "playlists",
       "about": "About this program"
     },
-	"noalbum": "No albums",
-	"onealbum": "One album",
-	"morealbums": "albums",
-	"notracks": "No tracks",
-	"onetrack": "One tracks",
-	"moretracks": "tracks"
+    "noalbum": "No albums",
+    "onealbum": "One album",
+    "morealbums": "albums",
+    "notracks": "No tracks",
+    "onetrack": "One tracks",
+    "moretracks": "tracks"
   },
   "login": {
-	"error": "Please check all fields",
-	"label": {
-		"username": "Username",
-		"password": "Password",
-		"port": "Synology server port",
-		"lastfm": "Last.fm username",
-		"remember": "Remember my details"
-	},
-	"placeholder": {
-		"username": "username",
-		"password": "password",
-		"lastfm": "Optionally enter your last.fm username"
-	},
-	"help": "Please enter the port on which your synology diskstation is running. Default port is <em>5000</em>",
-	"button": "Login"
+    "error": "Please check all fields",
+    "label": {
+      "username": "Username",
+      "password": "Password",
+      "port": "Synology server port",
+      "lastfm": "Last.fm username",
+      "remember": "Remember my details"
+    },
+    "placeholder": {
+      "username": "username",
+      "password": "password",
+      "lastfm": "Optionally enter your last.fm username"
+    },
+    "help": "Please enter the port on which your synology diskstation is running. Default port is <em>5000</em>",
+    "button": "Login"
   },
-  "overview" : {
-    "headers" : {
+  "overview": {
+    "headers": {
       "recent": "Recently listened",
       "added": "Recently added",
       "upcoming": "Upcoming releases"
     },
-	"loading": {
-		"recent": "Loading recently listened",
-		"added": "Loading recently added",
-		"upcoming": "Loading upcoming releases"
-	}
+    "loading": {
+      "recent": "Loading recently listened",
+      "added": "Loading recently added",
+      "upcoming": "Loading upcoming releases"
+    },
+    "listening": "listening now"
   },
   "playlists": {
     "loadingPlural": "loading playlists",
@@ -54,52 +55,52 @@
     "lists": {
       "lastfmName": "Last.fm loved list for"
     },
-	"popup": {
-		"add": {
-			"header": "Add new playlist",
-			"label": {
-				"name": "Playlist name"
-			},
-			"button": "Add new playlist"
-		},
-		"rename": {
-			"header": "Rename playlist",
-			"button": "Rename playlist"
-		},
-		"error": "Please give a name to the playlist",
-		"help": "Please enter the name of the playlist, this new list will be stored on your server."
-	}
+    "popup": {
+      "add": {
+        "header": "Add new playlist",
+        "label": {
+          "name": "Playlist name"
+        },
+        "button": "Add new playlist"
+      },
+      "rename": {
+        "header": "Rename playlist",
+        "button": "Rename playlist"
+      },
+      "error": "Please give a name to the playlist",
+      "help": "Please enter the name of the playlist, this new list will be stored on your server."
+    }
   },
   "about": {
-		"lastUpdated": "Last updated:",
-		"sync": "Sync data",
-		"artists": "Total amount of artists:",
-		"albums": "Total amount of albums:",
-		"tracks": "Total amount of tracks:",
-		"time": "Total playing time:",
-		"days": "days",
-		"ums": "(U:M:S)",
-		"connectLastFm": "Connect to last.fm",
-		"connectedLastFm": "Connected to last.fm",
-		"debug": "debug:",
-		"fetched": "Fetched music file in : ",
-		"parsed": "Parsed music file in : ",
-		"intro": "JSMusicDB is a webstandards based music library/player that can be installed on a Synology NAS",
-		"beta": "JSMusicDB is in public beta. Any bugs found can be <a href=\"https://github.com/lucienimmink/JSMusicDB/issues\" target=\"_blank\">reported</a>."
-	},
-	"album": {
-		"playlist": {
-			"add": "Add to playlist",
-			"new": "New playlist"
-		},
-		"artist": "artist",
-		"album": "album",
-		"year": "year",
-		"tracks": "tracks"
-	},
-	"player": {
-		"close": "&times; Now playing",
-		"upNext": "Up next:",
-		"by": "by"
-	}
+    "lastUpdated": "Last updated:",
+    "sync": "Sync data",
+    "artists": "Total amount of artists:",
+    "albums": "Total amount of albums:",
+    "tracks": "Total amount of tracks:",
+    "time": "Total playing time:",
+    "days": "days",
+    "ums": "(U:M:S)",
+    "connectLastFm": "Connect to last.fm",
+    "connectedLastFm": "Connected to last.fm",
+    "debug": "debug:",
+    "fetched": "Fetched music file in : ",
+    "parsed": "Parsed music file in : ",
+    "intro": "JSMusicDB is a webstandards based music library/player that can be installed on a Synology NAS",
+    "beta": "JSMusicDB is in public beta. Any bugs found can be <a href=\"https://github.com/lucienimmink/JSMusicDB/issues\" target=\"_blank\">reported</a>."
+  },
+  "album": {
+    "playlist": {
+      "add": "Add to playlist",
+      "new": "New playlist"
+    },
+    "artist": "artist",
+    "album": "album",
+    "year": "year",
+    "tracks": "tracks"
+  },
+  "player": {
+    "close": "&times; Now playing",
+    "upNext": "Up next:",
+    "by": "by"
+  }
 }

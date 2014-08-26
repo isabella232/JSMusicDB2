@@ -695,7 +695,9 @@ function($scope, $rootScope, $log, RestService) {'use strict';
 	};
 
 	$scope.next = function(prebuffer) {
-		$scope.playing.track.animate = false;
+		if ($scope.playing.track) {
+			$scope.playing.track.animate = false;
+		}
 		$(".previousAlbumArt").attr("src", $(".currentAlbumArt").attr("src")).removeClass('animate').removeClass('animated').removeClass('animateBack');
 		if (!prebuffer) {
 			$scope.prebufferdTrack = null;
@@ -749,7 +751,9 @@ function($scope, $rootScope, $log, RestService) {'use strict';
 	};
 
 	$scope.back = function(prebuffer) {
-		$scope.playing.track.animate = false;
+		if ($scope.playing.track) {
+			$scope.playing.track.animate = false;
+		}
 		$(".previousAlbumArt").attr("src", $(".currentAlbumArt").attr("src")).removeClass('animate').removeClass('animated').removeClass('animateBack').addClass('temp-back');
 		$scope.prebufferdTrack = null;
 		if (!$scope.playingList) {
@@ -1135,8 +1139,8 @@ function($scope, $routeParams, $log, RestService, $rootScope, ModelService, $mod
 	};
 }]);
 
-jsmusicdb.controller('OverviewController', ['$scope', 'RestService', '$rootScope', 'ModelService',
-function($scope, RestService, $rootScope, ModelService) {
+jsmusicdb.controller('OverviewController', ['$scope', 'RestService', '$rootScope', 'ModelService', '$translate',
+function($scope, RestService, $rootScope, ModelService, $translate) {
 	'use strict';
 
 	$scope.upcommingAlbums = [];
@@ -1155,6 +1159,10 @@ function($scope, RestService, $rootScope, ModelService) {
 		return "" + firstLetter;
 	};
 
+	$scope.recentTracks = $rootScope.recentTracks;
+	$scope.recentlyAdded = $rootScope.recentlyAdded;
+	$scope.upcommingAlbums = $rootScope.upcommingAlbums;
+
 	$scope.loadRecent = function(n) {
 		if (!n) n = $rootScope.user.lastfmuser;
 		RestService.Overview.recent(n, function(json) {
@@ -1170,20 +1178,24 @@ function($scope, RestService, $rootScope, ModelService) {
 							if (fmtrack.date) {
 								track.lastPlayed = parseInt(fmtrack.date.uts) * 1000;
 							} else {
-								track.lastPlayed = "playing now";
+								$translate('overview.listening').then(function(translation) {
+									track.lastPlayed = translation;
+								});
 							}
 							tmplist.push(track);
 						}
 					} else {
 						var album = $scope.albums[artistName + "-" + albumName.toLowerCase()];
-						if (album) {
+						if (album && track) {
 							angular.forEach(album.tracks, function(track) {
 								if (track.title.toLowerCase() === title.toLowerCase()) {
 									RestService.Playlists.storeIdByKey(artistName + (title.toLowerCase()), track);
 									if (fmtrack.date) {
 										track.lastPlayed = parseInt(fmtrack.date.uts) * 1000;
 									} else {
-										track.lastPlayed = "Listening now";
+										$translate('overview.listening').then(function(translation) {
+											track.lastPlayed = translation;
+										});
 									}
 									tmplist.push(track);
 								}
@@ -1196,13 +1208,16 @@ function($scope, RestService, $rootScope, ModelService) {
 							if (fmtrack.date) {
 								track.lastPlayed = parseInt(fmtrack.date.uts) * 1000;
 							} else {
-								track.lastPlayed = "Listening now";
+								$translate('overview.listening').then(function(translation) {
+									track.lastPlayed = translation;
+								});
 							}
 							tmplist.push(track);
 						}
 					}
 				});
 				$scope.recentTracks = tmplist;
+				$rootScope.recentTracks = tmplist;
 			}
 		});
 	};
@@ -1215,7 +1230,9 @@ function($scope, RestService, $rootScope, ModelService) {
 				$scope.letters[letterObject].active = false;
 			}
 			var tmplist = [];
-			$scope.loading.recentAdded = true;
+			if (!$rootScope.recentlyAdded) {
+				$scope.loading.recentAdded = true;
+			}
 			RestService.Overview.recentlyAdded(function(json) {
 				$scope.loading.recentAdded = false;
 				if (json.items) {
@@ -1237,6 +1254,7 @@ function($scope, RestService, $rootScope, ModelService) {
 						}
 					});
 					$scope.recentlyAdded = tmplist;
+					$rootScope.recentlyAdded = $scope.recentlyAdded;
 				}
 			});
 			$scope.$watch(function() {
@@ -1244,7 +1262,9 @@ function($scope, RestService, $rootScope, ModelService) {
 			}, function(n, o) {
 				if (n) {
 					var tmplist = [];
-					$scope.loading.upcomming = true;
+					if (!$rootScope.upcommingAlbums) {
+						$scope.loading.upcomming = true;
+					}
 					RestService.Overview.upcomming(n, function(json) {
 						$scope.loading.upcomming = false;
 						if (json.albums) {
@@ -1259,8 +1279,11 @@ function($scope, RestService, $rootScope, ModelService) {
 							});
 						}
 						$scope.upcommingAlbums = tmplist;
+						$rootScope.upcommingAlbums = $scope.upcommingAlbums;
 					});
-					$scope.loading.recent = true;
+					if (!$rootScope.recentTracks) {
+						$scope.loading.recent = true;
+					}
 					$scope.loadRecent(n);
 				}
 			});
@@ -2737,10 +2760,10 @@ angular.module('JSMusicDB.ModelService', []).factory('ModelService', ['$log',
 function($log) {
 	var factory = {};
 
-	factory.parse = function (json, $scope, $rootScope) {
+	factory.parse = function(json, $scope, $rootScope) {
 		var start = new Date().getTime();
 		if (json[0] !== "<") {
-			angular.forEach(json, function (value) {
+			angular.forEach(json, function(value) {
 				factory.parseLine(value, $scope);
 			});
 			$scope.debug.parseJSON = new Date().getTime() - start;
@@ -2758,16 +2781,15 @@ function($log) {
 			}
 			case 'artist' : {
 				if (line.Naam) {
-					var firstLetter = factory.getFirstLetter(line.Naam),
-							artistName = factory.stripThe(line.Naam);
+					var firstLetter = factory.getFirstLetter(line.Naam), artistName = factory.stripThe(line.Naam);
 					// add letter
 					if (!$scope.letters[firstLetter]) {
 						var letter = {
 							letter : firstLetter,
-							artists: [],
+							artists : [],
 							artistsLocal : [],
-							isActive: false,
-							isVisible: true
+							isActive : false,
+							isVisible : true
 						};
 						$scope.letters[letter.letter] = letter;
 					}
@@ -2775,11 +2797,11 @@ function($log) {
 					if (!$scope.artists[artistName]) {
 						var artist = {
 							name : line.Naam,
-							sortName: artistName,
-							albums: [],
-							albumsLocal: [],
-							url: 'http://ws.audioscrobbler.com/2.0/',
-							data: {
+							sortName : artistName,
+							albums : [],
+							albumsLocal : [],
+							url : 'http://ws.audioscrobbler.com/2.0/',
+							data : {
 								method : 'artist.getinfo',
 								api_key : '956c1818ded606576d6941de5ff793a5',
 								artist : line.Naam,
@@ -2787,7 +2809,7 @@ function($log) {
 								autoCorrect : true
 							},
 							isVisible : true,
-							artistURL: function () {
+							artistURL : function() {
 								return "letter/" + firstLetter + "/artist/" + artistName.toLowerCase();
 							}
 						};
@@ -2800,26 +2822,25 @@ function($log) {
 			}
 			case 'album': {
 				if (line.Album && line.Artiest) {
-					var firstLetter = factory.getFirstLetter(line.Artiest),
-							artistName = factory.stripThe(line.Artiest);
+					var firstLetter = factory.getFirstLetter(line.Artiest), artistName = factory.stripThe(line.Artiest);
 					// add album
 					if (!$scope.albums[artistName + "-" + line.Album.toLowerCase()]) {
 						var album = {
 							album : line.Album,
-							year: (line.Jaar !== 'null') ? line.Jaar : null,
+							year : (line.Jaar !== 'null') ? line.Jaar : null,
 							artist : artistName,
-							tracks: [],
-							url: 'http://ws.audioscrobbler.com/2.0/',
-							data: {
+							tracks : [],
+							url : 'http://ws.audioscrobbler.com/2.0/',
+							data : {
 								method : 'album.getinfo',
 								api_key : '956c1818ded606576d6941de5ff793a5',
 								artist : line.Artiest,
-								album: line.Album,
+								album : line.Album,
 								format : 'json',
 								autoCorrect : true
 							},
-							isVisible: true,
-							albumURL: function () {
+							isVisible : true,
+							albumURL : function() {
 								return "letter/" + firstLetter + "/artist/" + artistName.toLowerCase() + "/album/" + line.Album;
 							}
 						};
@@ -2831,38 +2852,39 @@ function($log) {
 				break;
 			}
 			case 'track': {
-				var firstLetter = factory.getFirstLetter(line.Artiest),
-					artistName = factory.stripThe(line.Artiest);
-				if ($scope.albums[artistName + "-" + line.Album]) {
-					// part of an album
-					var track = {
-						id: line.id,
-						file: line.Naam,
-						artist: line.Artiest,
-						artistID: artistName,
-						album: line.album,
-						time: line.Duur,
-						title: line.Titel,
-						number: Number(line.Track || ''),
-						path: line.Pad,
-						disc: Number(line.Disk),
-						isPlaying: false,
-						filename: function () {
-					    	var name = line.path.split('/');
-					    	return name[name.length-1];
-					   },
-					   seconds: line.seconds
-					};
-					$scope.albums[artistName + "-" + line.Album].tracks.push(track);
-					track.albumNode = $scope.albums[artistName + "-" + line.Album];
-					$scope.tracks[track.id] = track;
-					$scope.trackByPath[track.path] = track;
+				var firstLetter = factory.getFirstLetter(line.Artiest), artistName = factory.stripThe(line.Artiest);
+				if (!$scope.tracks[line.id]) {
+					if ($scope.albums[artistName + "-" + line.Album]) {
+						// part of an album
+						var track = {
+							id : line.id,
+							file : line.Naam,
+							artist : line.Artiest,
+							artistID : artistName,
+							album : line.album,
+							time : line.Duur,
+							title : line.Titel,
+							number : Number(line.Track || ''),
+							path : line.Pad,
+							disc : Number(line.Disk),
+							isPlaying : false,
+							filename : function() {
+								var name = line.path.split('/');
+								return name[name.length - 1];
+							},
+							seconds : line.seconds
+						};
+						$scope.albums[artistName + "-" + line.Album].tracks.push(track);
+						track.albumNode = $scope.albums[artistName + "-" + line.Album];
+						$scope.tracks[track.id] = track;
+						$scope.trackByPath[track.path] = track;
+					}
 				}
 				break;
 			}
 		}
 	};
-	factory.getFirstLetter = function (name) {
+	factory.getFirstLetter = function(name) {
 		name = factory.stripThe(name);
 		var specialChars = [' ', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '-'], firstLetter = name.charAt(0);
 		if ($.inArray(firstLetter, specialChars) > -1) {
@@ -2870,7 +2892,7 @@ function($log) {
 		}
 		return "" + firstLetter;
 	};
-	factory.stripThe = function (name) {
+	factory.stripThe = function(name) {
 		name = $.trim(name.toUpperCase());
 		name = (name.indexOf('THE ') === 0) ? name.substring(4) : name;
 		return name;
