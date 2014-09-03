@@ -30,6 +30,8 @@ function($scope, $http, $rootScope, $location, $routeParams, $modal, RestService
 
 	$rootScope.path = 'JSMusicDB';
 
+	Notify.requestPermission();
+
 	$scope.letters = {};
 	$scope.artists = {};
 	$scope.albums = {};

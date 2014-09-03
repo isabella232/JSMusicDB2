@@ -78,6 +78,13 @@ function($scope, $rootScope, $log, RestService) {'use strict';
 			};
 			$.post(url, data, function() {
 				busyScrobbling = false;
+				var myNotification = new Notify('JSMusicDB is playing: ', {
+			    body: $scope.playing.track.title + " by " + $scope.playing.track.artist,
+			    timeout: 5,
+			    tag: 'JSMusicDB-nowPlaying',
+			    icon: 'http://www.arielext.org/jsmusicdb/images/icon.png' // should be albumart!
+				});
+				myNotification.show();
 			});
 		}
 	};
