@@ -107,6 +107,8 @@ function($scope, $http, $rootScope, $location, $routeParams, $modal, RestService
 
 	$rootScope.path = 'JSMusicDB';
 
+	Notify.requestPermission();
+
 	$scope.letters = {};
 	$scope.artists = {};
 	$scope.albums = {};
@@ -656,6 +658,15 @@ function($scope, $rootScope, $log, RestService) {'use strict';
 				audiotag.play();
 			});
 		}
+		RestService.Music.getAlbumArt($scope.playing.track, function (url) {
+			var myNotification = new Notify($scope.playing.track.title, {
+		    body: "'" + $scope.playing.track.albumNode.album + "' by '" + $scope.playing.track.artist + "'",
+		    timeout: 5,
+		    tag: 'JSMusicDB-nowPlaying',
+		    icon: url
+			});
+			myNotification.show();
+		});
 	};
 
 	$scope.playpause = function() {
@@ -2628,6 +2639,29 @@ function($http, $log, $location) {
 				}).success(function () {
 					callback();
 				});
+			},
+			getAlbumArt: function (track, callback) {
+				$http.get('http://ws.audioscrobbler.com/2.0/', {
+						params : {
+							method : 'album.getinfo',
+							api_key : '956c1818ded606576d6941de5ff793a5',
+							artist : track.artist,
+							album : track.albumNode.album,
+							format : 'json',
+							autoCorrect : true
+						}
+					}).success(function(json) {
+						if (json.album) {
+							var artlist = json.album.image;
+							$.each(artlist, function() {
+								if (this.size === 'extralarge') {
+									var url = this["#text"];
+									var imgUrl = url || "images/nocover.png";
+									callback(imgUrl);
+								}
+							});
+						}
+					});
 			}
 		},
 		Playlists: {
