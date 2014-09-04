@@ -211,8 +211,8 @@ function($scope, $rootScope, $log, RestService) {'use strict';
 			});
 		}
 		RestService.Music.getAlbumArt($scope.playing.track, function (url) {
-			var myNotification = new Notify($scope.playing.track.title, {
-		    body: "'" + $scope.playing.track.albumNode.album + "' by '" + $scope.playing.track.artist + "'",
+			var myNotification = new Notify('playing: ' + $scope.playing.track.title.capitalize(), {
+		    body: "'" + $scope.playing.track.albumNode.album.capitalize() + "' by '" + $scope.playing.track.artist.capitalize() + "'",
 		    timeout: 5,
 		    tag: 'JSMusicDB-nowPlaying',
 		    icon: url
@@ -232,6 +232,15 @@ function($scope, $rootScope, $log, RestService) {'use strict';
 			$scope.isPlaying = 'ios7-pause';
 			$scope.playing.track.isPlaying = true;
 			audiotag.play();
+			RestService.Music.getAlbumArt($scope.playing.track, function (url) {
+				var myNotification = new Notify('resuming: ' + $scope.playing.track.title.capitalize(), {
+			    body: "'" + $scope.playing.track.albumNode.album.capitalize() + "' by '" + $scope.playing.track.artist.capitalize() + "'",
+			    timeout: 5,
+			    tag: 'JSMusicDB-nowPlaying',
+			    icon: url
+				});
+				myNotification.show();
+			});
 		}
 	};
 

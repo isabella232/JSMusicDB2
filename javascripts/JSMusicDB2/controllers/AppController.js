@@ -74,6 +74,11 @@ function($scope, $http, $rootScope, $location, $routeParams, $modal, RestService
 	tmhDynamicLocale.set($scope.language);
 	$translate.use($scope.language);
 
+	String.prototype.capitalize = function(){
+   return this.replace( /(^|\s)([a-z])/g , function(m,p1,p2){ return p1+p2.toUpperCase(); } );
+  };
+
+
 	$scope.$on("music.get", function() {
 		$scope.debug = $scope.debug || {};
 		var start = new Date().getTime();
