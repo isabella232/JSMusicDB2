@@ -43,7 +43,7 @@
 		<link rel="icon" type="image/png" href="/jsmusicdb/favicon-96x96.png" sizes="96x96">
 		<link rel="icon" type="image/png" href="/jsmusicdb/favicon-16x16.png" sizes="16x16">
 		<link rel="icon" type="image/png" href="/jsmusicdb/favicon-32x32.png" sizes="32x32">
-		<meta name="msapplication-TileColor" content="#2d89ef">
+		<meta name="msapplication-TileColor" content="#607d8b">
 		<meta name="msapplication-TileImage" content="/jsmusicdb/mstile-144x144.png">
 	</head>
 
@@ -89,6 +89,9 @@
 								<li ng-repeat="letter in letters" ng-class="(letter.active) ? 'active': ''">
 									<a ng-href="#/letter/{{letter.letter}}">{{letter.letter}}</a>
 								</li>
+								<li>
+								  <a href="#/search/"><i class="ion-ios7-search"></i></a>
+								</li>
 							</ul>
 						</div>
 					</div>
@@ -103,6 +106,9 @@
 						<li ng-repeat="letter in letters" ng-class="(letter.active) ? 'active': ''">
 							<a ng-href="#/letter/{{letter.letter}}">{{letter.letter}}</a>
 						</li>
+						<li>
+              <a href="#/search/"><i class="ion-ios7-search"></i></a>
+            </li>
 					</ul>
 				</div><!-- /.navbar-collapse -->
 			</div>
@@ -144,6 +150,7 @@
 		<script src="javascripts/JSMusicDB2/controllers/PlaylistController.js"></script>
 		<script src="javascripts/JSMusicDB2/controllers/OverviewController.js"></script>
 		<script src="javascripts/JSMusicDB2/controllers/AddPlaylistController.js"></script>
+		<script src="javascripts/JSMusicDB2/controllers/SearchController.js"></script>
 
 		<script src="javascripts/JSMusicDB2/modules/angular-translate.min.js"></script>
 		<script src="javascripts/JSMusicDB2/modules/tmh-dynamicLocale.js"></script>

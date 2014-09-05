@@ -46,7 +46,7 @@ header {
     }
     .dropdown-menu {
       top: 50px;
-      width: 50%;
+      min-width: 50%;
       li {
         a {
           padding: 6px 10px;
@@ -77,7 +77,7 @@ header {
       }
     }
     .dropdown-menu {
-      min-width: 230px;
+      min-width: 284px;
       top: 40px;
       li {
         display: inline-block;

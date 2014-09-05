@@ -38,6 +38,7 @@ gulp.task('cp', function () {
 	gulp.src('./stylesheets/fonts/**/*').pipe(imagemin()).pipe(gulp.dest('./dist/stylesheets/fonts/'));
 	gulp.src('./*.png').pipe(imagemin()).pipe(gulp.dest('./dist/'));
 	gulp.src('./*.ico').pipe(gulp.dest('./dist/'));
+	gulp.src('./*.txt').pipe(gulp.dest('./dist/'));
 	gulp.src('./browserconfig.xml').pipe(gulp.dest('./dist/'));
 	gulp.src('./javascripts/angular/i18n/**/*').pipe(gulp.dest('./dist/javascripts/angular/i18n/'));
 	gulp.src('./translations/**/*').pipe(gulp.dest('./dist/translations/'));

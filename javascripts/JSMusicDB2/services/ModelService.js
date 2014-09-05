@@ -88,6 +88,11 @@ function($log) {
 						};
 						$scope.albums[artistName + "-" + line.Album.toLowerCase()] = album;
 						$scope.artists[artistName].albums.push(album);
+						if (!$scope.year) {
+							$scope.year = {};
+						}
+						$scope.year[album.year] = $scope.year[album.year] || [];
+						$scope.year[album.year].push(album);
 						album.artistNode = $scope.artists[artistName];
 					}
 				}

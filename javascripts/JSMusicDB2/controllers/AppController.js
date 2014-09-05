@@ -78,6 +78,10 @@ function($scope, $http, $rootScope, $location, $routeParams, $modal, RestService
    return this.replace( /(^|\s)([a-z])/g , function(m,p1,p2){ return p1+p2.toUpperCase(); } );
   };
 
+  RestService.Overview.changelog(function (txt) {
+  	$scope.changelog = txt;
+  });
+
 
 	$scope.$on("music.get", function() {
 		$scope.debug = $scope.debug || {};

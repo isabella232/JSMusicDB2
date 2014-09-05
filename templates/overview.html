@@ -18,7 +18,7 @@
 		<h1 translate="overview.headers.added">Recently added</h1>
 		<ul class="media">
 			<li ng-repeat="album in recentlyAdded" bn-lazy-bg="{{album.artist + '|' + album.album}}">
-				<a ng-href="#/letter/{{album.letter}}/artist/{{album.artist}}/album/{{album.album}}">
+				<a ng-href="#{{album.url}}">
 					<p class="details">
 						{{album.artist}} - {{album.album}}
 					</p>

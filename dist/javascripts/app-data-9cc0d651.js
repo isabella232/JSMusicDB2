@@ -155,6 +155,10 @@ function($scope, $http, $rootScope, $location, $routeParams, $modal, RestService
    return this.replace( /(^|\s)([a-z])/g , function(m,p1,p2){ return p1+p2.toUpperCase(); } );
   };
 
+  RestService.Overview.changelog(function (txt) {
+  	$scope.changelog = txt;
+  });
+
 
 	$scope.$on("music.get", function() {
 		$scope.debug = $scope.debug || {};
@@ -306,14 +310,21 @@ function($scope, $routeParams, $log, $rootScope, RestService, $modal) {
 		document.location = "#/letter/" + letter + "/artist/" + artist;
 	};
 
-	$scope.playTrack = function(track) {
+	$scope.playTrack = function(track, playlist) {
 		if (track.state !== 'secondary') {
 			if ($scope.playing.track) {
 				$scope.playing.track.isPlaying = false;
 				$scope.playing.track = null;
 			}
 			$scope.playing.track = track;
-			$rootScope.$broadcast('play.track', track);
+			if (!playlist) {
+				$rootScope.$broadcast('play.track', track);
+			} else {
+				var playlingList = {
+					items: playlist
+				};
+				$rootScope.$broadcast('play.track', track, playlingList);
+			}
 		}
 	};
 
@@ -578,6 +589,14 @@ function($scope, $rootScope, $log, RestService) {'use strict';
 	$scope.toggle = function(toggleType) {
 		if (toggleType === 'partyMode') {
 			$scope.inPartyMode = !$scope.inPartyMode;
+			// trigger resize albumart
+			if ($(".desktop").length === 1) {
+				setTimeout(function () {
+					$(".imageWrapper").width($(".inPartyMode").height());
+				}, 100);
+  		} else {
+  			$(".imageWrapper").width('');
+  		}
 		}
 		if (toggleType == 'isPlaying') {
 			$scope.playpause();
@@ -1175,13 +1194,19 @@ function($scope, RestService, $rootScope, ModelService, $translate) {
 	$rootScope.path = "JSMusicDB";
 
 	var getFirstLetter = function(name) {
-		name = $.trim(name);
+		name = $.trim(name).toUpperCase();
 		name = (name.indexOf('THE ') === 0) ? name.substring(4) : name;
 		var specialChars = [' ', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '-'], firstLetter = name.charAt(0);
 		if ($.inArray(firstLetter, specialChars) > -1) {
 			firstLetter = '1';
 		}
 		return "" + firstLetter;
+	};
+
+	var stripThe = function(name) {
+		name = $.trim(name.toUpperCase());
+		name = (name.indexOf('THE ') === 0) ? name.substring(4) : name;
+		return name.toLowerCase();
 	};
 
 	$scope.recentTracks = $rootScope.recentTracks;
@@ -1273,7 +1298,8 @@ function($scope, RestService, $rootScope, ModelService, $translate) {
 							var recentAlbum = {
 								artist : (album.artist || album.album_artist).toLowerCase(),
 								album : (album.album_name || album.title).toLowerCase(),
-								letter : getFirstLetter(album.artist || album.album_artist)
+								letter : getFirstLetter(album.artist || album.album_artist),
+								url: '/letter/'+getFirstLetter(album.artist || album.album_artist)+'/artist/'+stripThe((album.artist || album.album_artist))+'/album/'+(album.album_name || album.title).toLowerCase()
 							};
 							tmplist.push(recentAlbum);
 						}
@@ -1336,6 +1362,89 @@ function($scope, $modalInstance, playlistName) {'use strict';
     		$scope.hasError = true;
     	}
   	};
+}]);
+
+jsmusicdb.controller('SearchController', ['$scope', '$http', '$rootScope', '$location', '$routeParams', '$modal', 'RestService', 'ModelService', 'tmhDynamicLocale', '$translate', '$window',
+function($scope, $http, $rootScope, $location, $routeParams, $modal, RestService, ModelService, tmhDynamicLocale, $translate, $window) {
+
+	window.scrollTo(0, 0);
+
+	$scope.tooMany = false;
+	$scope.searchString = $routeParams.query;
+	$scope.searchfor = $routeParams.filter || "artists";
+	$scope.results = null;
+	$scope.maxYield = 48;
+	$scope.loading = {};
+
+	$translate("search." + $scope.searchfor).then(function (translated) {
+		$scope.translatedSearch = translated;
+	});
+
+	$scope.doSearch = function() {
+		$scope.loading.search = true;
+		$scope.results = null;
+		var querylist = $scope[$scope.searchfor];
+		var filteredList = [];
+		setTimeout(function() {
+			angular.forEach(querylist, function(value, key) {
+				key = key.toLowerCase();
+				if ($scope.searchfor === 'albums') {
+					key = key.substring(key.lastIndexOf("-"));
+				}
+				if ($scope.searchfor === 'tracks') {
+					key = value.title.toLowerCase();
+				}
+				if ($scope.searchfor === 'year') {
+					key = key;
+					if (key === $scope.searchString) {
+						// value is the array
+						filteredList = value;
+					}
+				} else if (key.indexOf($scope.searchString.toLowerCase()) !== -1) {
+					filteredList.push(value);
+				}
+			});
+			if (filteredList.length > $scope.maxYield) {
+				$scope.tooMany = true;
+				filteredList = filteredList.splice(0, $scope.maxYield);
+			}
+			$scope.$apply(function () {
+				$window.location = "#/search/" + $scope.searchfor + "/" + $scope.searchString;
+				$scope.results = filteredList;
+				$scope.loading.search = false;
+			});
+		}, 10);
+	};
+
+	$rootScope.$watch(function() {
+		return $rootScope.parsed;
+	}, function(n, o) {
+		if (n) {
+			// get current playlists
+			RestService.Playlists.getPlaylists(function(json) {
+				$scope.playlists = json;
+			});
+			if ($scope.searchString && $scope.searchfor) {
+				$scope.doSearch();
+			}
+		}
+	});
+
+	$scope.setFilter = function (filter) {
+		$scope.searchfor = filter;
+		$translate("search." + filter).then(function (translated) {
+			$scope.results = null;
+			$scope.translatedSearch = translated;
+		});
+
+	};
+
+	$scope.$watch(function () {
+		return $scope.searchString;
+	}, function (n, o) {
+		$scope.results = null;
+	});
+
 }]);
 
 /*!
@@ -2620,6 +2729,11 @@ function($http, $log, $location) {
 				}).success(function (json) {
 					callback(json);
 				});
+			},
+			changelog: function (callback) {
+				$http.get('changelog.txt').success(function (txt) {
+					callback(txt);
+				});
 			}
 		},
 		Music: {
@@ -2894,6 +3008,11 @@ function($log) {
 						};
 						$scope.albums[artistName + "-" + line.Album.toLowerCase()] = album;
 						$scope.artists[artistName].albums.push(album);
+						if (!$scope.year) {
+							$scope.year = {};
+						}
+						$scope.year[album.year] = $scope.year[album.year] || [];
+						$scope.year[album.year].push(album);
 						album.artistNode = $scope.artists[artistName];
 					}
 				}

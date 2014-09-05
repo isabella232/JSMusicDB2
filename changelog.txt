@@ -1,0 +1,5 @@
+<strong>2014-09-05</strong> <br />
+- Added changelog <br />
+- Added search features <br />
+- Fixed fullscreen album art on startup <br />
+- Fixed recently added links

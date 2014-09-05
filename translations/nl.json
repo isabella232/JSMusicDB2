@@ -74,9 +74,9 @@
   "about": {
     "lastUpdated": "Laatst geupdate:",
     "sync": "Synchroniseer",
-    "artists": "Totaal aantal artiesten:",
-    "albums": "Totaal aantal albums:",
-    "tracks": "Totaal aantal nummers:",
+    "artists": "Aantal artiesten:",
+    "albums": "Aantal albums:",
+    "tracks": "Aantal nummers:",
     "time": "Totale speelduur:",
     "days": "dagen",
     "ums": "(U:M:S)",
@@ -86,7 +86,8 @@
     "fetched": "Muziekbestand gedownload in : ",
     "parsed": "Muziekbestand verwerkt in : ",
     "intro": "JSMusicDB is een webstandaard gebaseerde muziek bibliotheek en -speler die ge&iuml;nstalleerd kan worden op Synology NAS",
-    "beta": "JSMusicDB is beta. Gevonden bugs kunnen <a href=\"https://github.com/lucienimmink/JSMusicDB/issues\" target=\"_blank\">gemeld</a> worden."
+    "beta": "JSMusicDB is beta. Gevonden bugs kunnen <a href=\"https://github.com/lucienimmink/JSMusicDB/issues\" target=\"_blank\">gemeld</a> worden.",
+    "changelog": "Recente wijzigingen (engels):"
   },
   "album": {
     "playlist": {
@@ -102,5 +103,18 @@
     "close": "&times; Spelend",
     "upNext": "Volgende nummer:",
     "by": "door"
+  },
+  "search": {
+    "search": "Zoek naar",
+    "albums": "Albums",
+    "artists": "Artiesten",
+    "tracks": "Nummers",
+    "year": "Jaartal",
+    "searching": "Bezig met zoeken ...",
+    "results": "Resultaten voor ",
+    "warning": "Waarschuwing!",
+    "yield1": "De zoekopdracht leverde meer dan ",
+    "yield2": "resultaten op, alleen de eerste ",
+    "yield3": "resultaten worden getoond"
   }
 }

@@ -86,7 +86,8 @@
     "fetched": "Fetched music file in : ",
     "parsed": "Parsed music file in : ",
     "intro": "JSMusicDB is a webstandards based music library/player that can be installed on a Synology NAS",
-    "beta": "JSMusicDB is in public beta. Any bugs found can be <a href=\"https://github.com/lucienimmink/JSMusicDB/issues\" target=\"_blank\">reported</a>."
+    "beta": "JSMusicDB is in public beta. Any bugs found can be <a href=\"https://github.com/lucienimmink/JSMusicDB/issues\" target=\"_blank\">reported</a>.",
+    "changelog": "Recent changes:"
   },
   "album": {
     "playlist": {
@@ -102,5 +103,18 @@
     "close": "&times; Now playing",
     "upNext": "Up next:",
     "by": "by"
+  },
+  "search": {
+    "search": "Search for",
+    "albums": "Albums",
+    "artists": "Artists",
+    "tracks": "Tracks",
+    "year": "Year",
+    "searching": "Searching ...",
+    "results": "Results for ",
+    "warning": "Warning!",
+    "yield1": "The query yielded more than",
+    "yield2": "results; only the first",
+    "yield3": "are shown!"
   }
 }

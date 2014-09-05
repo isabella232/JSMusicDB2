@@ -125,6 +125,14 @@ function($scope, $rootScope, $log, RestService) {'use strict';
 	$scope.toggle = function(toggleType) {
 		if (toggleType === 'partyMode') {
 			$scope.inPartyMode = !$scope.inPartyMode;
+			// trigger resize albumart
+			if ($(".desktop").length === 1) {
+				setTimeout(function () {
+					$(".imageWrapper").width($(".inPartyMode").height());
+				}, 100);
+  		} else {
+  			$(".imageWrapper").width('');
+  		}
 		}
 		if (toggleType == 'isPlaying') {
 			$scope.playpause();

@@ -51,14 +51,21 @@ function($scope, $routeParams, $log, $rootScope, RestService, $modal) {
 		document.location = "#/letter/" + letter + "/artist/" + artist;
 	};
 
-	$scope.playTrack = function(track) {
+	$scope.playTrack = function(track, playlist) {
 		if (track.state !== 'secondary') {
 			if ($scope.playing.track) {
 				$scope.playing.track.isPlaying = false;
 				$scope.playing.track = null;
 			}
 			$scope.playing.track = track;
-			$rootScope.$broadcast('play.track', track);
+			if (!playlist) {
+				$rootScope.$broadcast('play.track', track);
+			} else {
+				var playlingList = {
+					items: playlist
+				};
+				$rootScope.$broadcast('play.track', track, playlingList);
+			}
 		}
 	};
 

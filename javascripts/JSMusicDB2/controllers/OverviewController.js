@@ -9,13 +9,19 @@ function($scope, RestService, $rootScope, ModelService, $translate) {
 	$rootScope.path = "JSMusicDB";
 
 	var getFirstLetter = function(name) {
-		name = $.trim(name);
+		name = $.trim(name).toUpperCase();
 		name = (name.indexOf('THE ') === 0) ? name.substring(4) : name;
 		var specialChars = [' ', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '-'], firstLetter = name.charAt(0);
 		if ($.inArray(firstLetter, specialChars) > -1) {
 			firstLetter = '1';
 		}
 		return "" + firstLetter;
+	};
+
+	var stripThe = function(name) {
+		name = $.trim(name.toUpperCase());
+		name = (name.indexOf('THE ') === 0) ? name.substring(4) : name;
+		return name.toLowerCase();
 	};
 
 	$scope.recentTracks = $rootScope.recentTracks;
@@ -107,7 +113,8 @@ function($scope, RestService, $rootScope, ModelService, $translate) {
 							var recentAlbum = {
 								artist : (album.artist || album.album_artist).toLowerCase(),
 								album : (album.album_name || album.title).toLowerCase(),
-								letter : getFirstLetter(album.artist || album.album_artist)
+								letter : getFirstLetter(album.artist || album.album_artist),
+								url: '/letter/'+getFirstLetter(album.artist || album.album_artist)+'/artist/'+stripThe((album.artist || album.album_artist))+'/album/'+(album.album_name || album.title).toLowerCase()
 							};
 							tmplist.push(recentAlbum);
 						}

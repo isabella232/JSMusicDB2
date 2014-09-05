@@ -87,6 +87,11 @@ function($http, $log, $location) {
 				}).success(function (json) {
 					callback(json);
 				});
+			},
+			changelog: function (callback) {
+				$http.get('changelog.txt').success(function (txt) {
+					callback(txt);
+				});
 			}
 		},
 		Music: {
