@@ -108,8 +108,11 @@ nav.navbar {
   }
   .nav > li > a {
     padding: 10px;
+    @include jsmusicdb-respond-min-width(sm) {
+      padding: 9px;
+    }
     @include jsmusicdb-respond-min-width(md) {
-      padding: 12px 12px;
+      padding: 12px;
     }
     @include jsmusicdb-respond-min-width(lg) {
       padding: 12px 15px;
@@ -578,7 +581,6 @@ footer {
    position: fixed;
    top: 110px;
    z-index: 1;
-   width: 300px;
  }
 }
 

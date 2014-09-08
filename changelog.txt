@@ -1,5 +1,6 @@
+<strong>2014-09-08</strong> <br />
+- Fixed playlist layout for all screensizes <br />
 <strong>2014-09-05</strong> <br />
 - Added changelog <br />
 - Added search features <br />
-- Fixed fullscreen album art on startup <br />
 - Fixed recently added links
